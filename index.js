@@ -1,8 +1,6 @@
 const fs = require("fs");
 const inquirer = require('inquirer');
-const githubApi = 'https://api.github.com/';
-
-const licenses = ["Public Domain & Equivalents", "Permissive License", "Copyleft", "Noncommercial License", "Proprietary License", "Confidential/Classified"];
+const githubApi = 'https://api.github.com/licenses/';
 
 const techUsed = ["HTML", "CSS", "Javascript", "Node.js", "VS Code", "Sublime", "Git/Github", "Chrome Developer Tools"];
 
@@ -57,9 +55,9 @@ inquirer
         },
         {
             name: 'license',
-            type: 'list',
+            type: 'input',
             message: 'Please select which license you would like to use (Use arrows + enter to select):',
-            choices: licenses,
+            // choices: licenses,
         },
         {
             name: 'deployWeb',
@@ -76,14 +74,22 @@ inquirer
             type: 'input',
             message: 'Please enter people to credit followed by their URL:',
         },
-
     ])
     .then((response) => {
         console.log(response);
+        let licenseBody = "";
+        let licenseDesc = "";
 
-
-
-
+        fetch(githubApi + response.license)
+            .then(function (response) {
+                console.log(response);
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("data", data);
+                licenseBody = data.body;
+                licenseDesc = data.description
+            });
 
         fs.writeFile(`${response.title}.md`, `# ${response.title}
 <br><br>
@@ -148,9 +154,10 @@ ${response.credits}
         
 Copyright (c) 2022 ${response.username}
 <br><br>
-${response.license}
+${licenseBody}
+${licenseDesc}
 `, (err) =>
-            err ? console.error(err) : console.log("Created README!"))
-    }
-    );
+            err ? console.error(err) : console.log("Created README!")
 
+        );
+    });
