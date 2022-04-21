@@ -46,9 +46,47 @@ inquirer
             message: 'Please enter test instructions:',
             name: 'test',
         },
+        {
+            type: 'list',
+            message: 'Please select which license you would like to use:',
+            name: 'license',
+            choices: ["1) Public Domain & Equivalents", "2) Permissive License", "3) Copyleft", "4) Noncommercial License", "5) Proprietary License", "6) Confidential/Classified"]
+        },
     ])
     .then((response) => {
         console.log(response)
 
     }
     );
+
+
+
+
+
+
+
+    // inquirer
+    // .prompt([
+    //     {
+    //         type: 'input',
+    //         message: 'What is your user name?',
+    //         name: 'username',
+    //     },
+    //     {
+    //         type: 'password',
+    //         message: 'What is your password?',
+    //         name: 'password',
+    //     },
+    //     {
+    //         type: 'password',
+    //         message: 'Re-enter password to confirm:',
+    //         name: 'confirm',
+    //     },
+    // ])
+    // .then((response) => {
+    //     console.log(response)
+    //     response.confirm === response.password
+    //         ? console.log('Success!')
+    //         : console.log('You forgot your password already?!')
+    // }
+    // );
