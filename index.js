@@ -1,6 +1,8 @@
-const fs = require("fs");
-const inquirer = require('inquirer');
-const githubApi = 'https://api.github.com/licenses/';
+import fs from "fs";
+import inquirer from 'inquirer';
+import fetch from 'node-fetch';
+
+const licenseArr = ["cc0-1.0", "mit", "mpl-2.0", "apache-2.0", "gpl-3.0", "agpl-3.0"]
 
 const techUsed = ["HTML", "CSS", "Javascript", "Node.js", "VS Code", "Sublime", "Git/Github", "Chrome Developer Tools"];
 
@@ -55,9 +57,9 @@ inquirer
         },
         {
             name: 'license',
-            type: 'input',
-            message: 'Please select which license you would like to use (Use arrows + enter to select):',
-            // choices: licenses,
+            type: 'list',
+            message: "Please select which license you would like to use (Use arrows + enter). Don't forget to update your info into the license!",
+            choices: licenseArr,
         },
         {
             name: 'deployWeb',
@@ -77,21 +79,19 @@ inquirer
     ])
     .then((response) => {
         console.log(response);
+
+        const githubApi = 'https://api.github.com/licenses/';
+
         let licenseBody = "";
-        let licenseDesc = "";
 
-        fetch(githubApi + response.license)
-            .then(function (response) {
-                console.log(response);
-                return response.json();
-            })
-            .then(function (data) {
-                console.log("data", data);
-                licenseBody = data.body;
-                licenseDesc = data.description
-            });
-
-        fs.writeFile(`${response.title}.md`, `# ${response.title}
+        var genReadme = async () => {
+            console.log(`${githubApi}${response.license}`);
+            const apiResponse = await fetch(`${githubApi}${response.license}`);
+            const apiData = await apiResponse.json();
+            console.log(apiData);
+            licenseBody = apiData.body;
+            console.log(licenseBody);
+            fs.writeFile(`${response.title}.md`, `# ${response.title}
 <br><br>
 
 ## <ins> Table of Contents: </ins>
@@ -152,12 +152,13 @@ ${response.credits}
 
 ## <ins> License: </ins>
         
-Copyright (c) 2022 ${response.username}
-<br><br>
+<br>
 ${licenseBody}
-${licenseDesc}
 `, (err) =>
-            err ? console.error(err) : console.log("Created README!")
+                err ? console.error(err) : console.log("Created README!")
 
-        );
-    });
+            );
+        }
+
+        genReadme();
+    })
