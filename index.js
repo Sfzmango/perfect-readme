@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 
 const licenseArr = ["cc0-1.0", "mit", "mpl-2.0", "apache-2.0", "gpl-3.0", "agpl-3.0"]
 
-const techUsed = ["HTML", "CSS", "Javascript", "Node.js", "VS Code", "Sublime", "Git/Github", "Chrome Developer Tools"];
+const techUsed = ["-HTML", "-CSS", "-Javascript", "-Third-Party APIs", "-Node.js", "-VS Code", "-Sublime Text", "-Git/Github", "-Chrome Developer Tools"];
 
 inquirer
     .prompt([
@@ -40,7 +40,7 @@ inquirer
             message: 'Please enter usage information:',
         },
         {
-            name: 'techologies',
+            name: 'technologies',
             type: 'checkbox',
             message: 'Please enter technologies used:',
             choices: techUsed,
@@ -74,7 +74,7 @@ inquirer
         {
             name: 'credits',
             type: 'input',
-            message: 'Please enter people to credit followed by their URL:',
+            message: 'Please enter people to credit:',
         },
     ])
     .then((response) => {
@@ -82,15 +82,14 @@ inquirer
 
         const githubApi = 'https://api.github.com/licenses/';
 
-        let licenseBody = "";
-
         var genReadme = async () => {
             console.log(`${githubApi}${response.license}`);
             const apiResponse = await fetch(`${githubApi}${response.license}`);
             const apiData = await apiResponse.json();
             console.log(apiData);
-            licenseBody = apiData.body;
-            console.log(licenseBody);
+            console.log(response.technologies);
+            let newTechArr = response.technologies.join('\r\n');
+            console.log(newTechArr);
             fs.writeFile(`${response.title}.md`, `# ${response.title}
 <br><br>
 
@@ -130,7 +129,7 @@ ${response.usage}
 
 ## <ins> Technologies and Programs Used: </ins>
         
-${response.technologies}
+${newTechArr}
 <br><br> 
         
 ## <ins> Demonstration: </ins>
@@ -153,12 +152,11 @@ ${response.credits}
 ## <ins> License: </ins>
         
 <br>
-${licenseBody}
+${apiData.body}
 `, (err) =>
                 err ? console.error(err) : console.log("Created README!")
 
             );
         }
-
         genReadme();
     })
