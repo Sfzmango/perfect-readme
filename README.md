@@ -46,7 +46,7 @@ To start the program, please open the perfect-readme directory on terminal and t
         
 ## <ins> Demonstration: </ins>
         
-![Demonstration](https://www.youtube.com/watch?v=wdvBjOSEkjE)
+[![Demonstration](https://iconape.com/wp-content/png_logo_vector/youtube-2017-icon-logo.png)](https://www.youtube.com/watch?v=wdvBjOSEkjE)
 <br><br>   
 
 ## <ins> Tests: </ins>
