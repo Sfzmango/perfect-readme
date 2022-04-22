@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 
 const licenseArr = ["cc0-1.0", "mit", "mpl-2.0", "apache-2.0", "gpl-3.0", "agpl-3.0"]
 
-const techUsed = ["-HTML", "-CSS", "-Javascript", "-Third-Party APIs", "-Node.js", "-VS Code", "-Sublime Text", "-Git/Github", "-Chrome Developer Tools"];
+const techUsed = ["- HTML", "- CSS", "- Javascript", "- Third-Party APIs", "- Node.js", "- VS Code", "- Sublime Text", "- Git/Github", "- Chrome Developer Tools"];
 
 inquirer
     .prompt([
@@ -46,9 +46,9 @@ inquirer
             choices: techUsed,
         },
         {
-            name: 'demoGif',
+            name: 'demo',
             type: 'input',
-            message: 'Please enter the directory of the demo gif relative to index.js:',
+            message: 'Please enter the directory of the demo relative to index.js:',
         },
         {
             name: 'test',
@@ -88,8 +88,8 @@ inquirer
             const apiData = await apiResponse.json();
             console.log(apiData);
             console.log(response.technologies);
-            let newTechArr = response.technologies.join('\r\n');
-            console.log(newTechArr);
+            let newTechArr = response.technologies.join('<br>\r\n');
+            console.log("new tech arr " + newTechArr);
             fs.writeFile(`${response.title}.md`, `# ${response.title}
 <br><br>
 
@@ -134,8 +134,12 @@ ${newTechArr}
         
 ## <ins> Demonstration: </ins>
         
-![Demonstration](${response.demoGif})
+![Demonstration](${response.demo})
 <br><br>   
+
+## <ins> Tests: </ins>
+
+${response.test}
 
 ## <ins> Links: </ins>
         
