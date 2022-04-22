@@ -3,6 +3,8 @@ import inquirer from 'inquirer';
 import fetch from 'node-fetch';
 
 const licenseArr = ["cc0-1.0", "mit", "mpl-2.0", "apache-2.0", "gpl-3.0", "agpl-3.0"]
+const badgeArr = ["![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)", "![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)", "![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)", "![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)", "![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)", "![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)",];
+
 
 const techUsed = ["- HTML", "- CSS", "- Javascript", "- Third-Party APIs", "- Node.js", "- VS Code", "- Sublime Text", "- Git/Github", "- Chrome Developer Tools"];
 
@@ -48,7 +50,7 @@ inquirer
         {
             name: 'demo',
             type: 'input',
-            message: 'Please enter the directory of the demo relative to index.js:',
+            message: 'Please enter the directory of the demo relative to index.js or demo URL:',
         },
         {
             name: 'test',
@@ -87,6 +89,7 @@ inquirer
             const apiResponse = await fetch(`${githubApi}${response.license}`);
             const apiData = await apiResponse.json();
             console.log(apiData);
+            console.log(apiData);
             console.log(response.technologies);
             let newTechArr = response.technologies.join('<br>\r\n');
             console.log("new tech arr " + newTechArr);
@@ -101,6 +104,7 @@ inquirer
 - [Usage](#-usage-)
 - [Technologies and Programs Used](#-technologies-and-programs-used-)
 - [Demonstration](#-demonstration-)
+- [Tests](#-tests-)
 - [Links](#-links-)
 - [Credits](#-credits-)
 - [License](#-license-)
@@ -156,7 +160,14 @@ ${response.credits}
 ## <ins> License: </ins>
         
 <br>
+
+${badgeArr[licenseArr.indexOf(response.license)]}
+
+<br>
+
+
 ${apiData.body}
+
 `, (err) =>
                 err ? console.error(err) : console.log("Created README!")
 
