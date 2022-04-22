@@ -106,8 +106,12 @@ inquirer
 
             // creates the readme files using template literal and data that we have gathered from the user
             // on line 177, badgeArr[licenseArr.indexOf(response.license)] -> gets the index number of the chosen license from licenseArr and pulls the corresponding badge image from the same index number of badgeArr
-            fs.writeFile(`${response.title}.md`, `# ${response.title}
-<br><br>
+            fs.writeFile(`${response.title}.md`, `# ${response.title}        
+<br>
+
+${badgeArr[licenseArr.indexOf(response.license)]}
+
+<br>
 
 ## <ins> Table of Contents: </ins>
 
@@ -171,17 +175,11 @@ ${response.credits}
 <br><br>
 
 ## <ins> License: </ins>
-        
-<br>
 
-${badgeArr[licenseArr.indexOf(response.license)]}
 
 <br>
-
 
 ${apiData.body}
-
-
 `, (err) => // if there is an error, error will be outputed, but if the program goes through everything smoothly, it will log "Created README!"
                 err ? console.error(err) : console.log("Created README!")
 
